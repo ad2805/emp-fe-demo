@@ -18,7 +18,7 @@ jobs:
           node-version: '21.7.2'  # Keep Node.js version as specified
  
       - name: Install dependencies
-        working-directory: /
+        working-directory: ./
         run: npm install
  
       - name: Execute commands over SSH
