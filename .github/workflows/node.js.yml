@@ -21,18 +21,7 @@ jobs:
         run: npm install
      
      
-      - name: Execute commands over SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST_DNS }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            echo "Stopping PM2 processes..."
-            /usr/local/bin/pm2 kill || true
-            echo "Cleaning up old files..."
-            cd /home/ubuntu/emp-fe-demo
-            sudo rm -rf * || true
+     
 
       - name: Deploy to Staging server
         uses: easingthemes/ssh-deploy@main
