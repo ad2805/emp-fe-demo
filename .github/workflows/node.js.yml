@@ -3,7 +3,7 @@ name: emp-fe-demo
 on:
   push:
     branches:
-      - develop
+      - main
  
 jobs:
   build:
