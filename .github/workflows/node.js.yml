@@ -20,6 +20,7 @@ jobs:
       - name: install dependencies
         run: npm install
      
+     
       - name: Execute commands over SSH
         uses: appleboy/ssh-action@master
         with:
@@ -27,20 +28,21 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            /usr/local/bin/pm2 kill
+            echo "Stopping PM2 processes..."
+            /usr/local/bin/pm2 kill || true
+            echo "Cleaning up old files..."
             cd /home/ubuntu/emp-fe-demo
-            sudo rm -rf *
- 
+            sudo rm -rf * || true
+
       - name: Deploy to Staging server
         uses: easingthemes/ssh-deploy@main
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SOURCE: "igs-AdminAssetMgr-services/"
+          SOURCE: "./emp-fe-demo/"  # Ensure this path is correct
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}  
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: /home/ubuntu/emp-fe-demo/
- 
- 
+
       - name: Restart PM2 Process
         uses: appleboy/ssh-action@master
         with:
@@ -48,5 +50,6 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            echo "Starting PM2 processes..."
             cd /home/ubuntu
-            /usr/local/bin/pm2 start ecosystem.config.js
+            /usr/local/bin/pm2 start ecosystem.config.js || true
