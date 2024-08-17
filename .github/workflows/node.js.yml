@@ -22,7 +22,6 @@ jobs:
         run: ls -R
 
       - name: Install dependencies
-        working-directory: .
         run: npm install
 
       - name: Execute commands over SSH
