@@ -28,7 +28,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             /usr/local/bin/pm2 kill
-            cd /home/ubuntu/igs-AdminAssetMgr-services
+            cd /home/ubuntu/emp-fe-demo
             sudo rm -rf *
  
       - name: Deploy to Staging server
@@ -38,7 +38,7 @@ jobs:
           SOURCE: "igs-AdminAssetMgr-services/"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}  
-          TARGET: /home/ubuntu/igs-AdminAssetMgr-services/
+          TARGET: /home/ubuntu/emp-fe-demo/
  
  
       - name: Restart PM2 Process
