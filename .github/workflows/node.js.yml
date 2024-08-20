@@ -27,23 +27,22 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "Stopping PM2 processes..."
-            /usr/local/bin/pm2 kill || true
-            echo "Cleaning up old files..."
             cd /home/ubuntu/emp-fe-demo
-            sudo rm -rf * || true
-     
-     
-     
-
-
-      - name: Restart PM2 Process
+            rm -rf*
+            sudo -s docker stop master-fe
+            cd /home/ubuntu/emp-fe-demo
+            cp /home/ubuntu/fe/.env .
+            cp /home/ubuntu/fe/* .
+           
+      - name: deployment to servert and dockerrizing the application
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            echo "Starting PM2 processes..."
-            cd /home/ubuntu
-            /usr/local/bin/pm2 start ecosystem.config.js || true
+              cd /home/ubuntu/emp-fe-demo
+              sudo docker build -t emp-fe-demo:latest .
+              sudo docker run --name master-fe -d -p 3003:80 emp-fe-demo:latest .
+
+            
